@@ -136,63 +136,6 @@
   },
   handleErrors: function (c, errors) {
     var h = this;
-    if (errors && $A.util.isArray(errors)) {
-      var errorMessages = [];
-      errors.forEach(function (error) {
-        if (error.pageErrors && $A.util.isArray(error.pageErrors)) {
-          error.pageErrors.forEach(function (pageError) {
-            errorMessages.push(pageError.message);
-          });
-
-          if (errorMessages.length > 0) {
-            h.error(errorMessages.join(', '), { title: 'Fix the error(s)' });
-            errorMessages = [];
-          }
-        }
-
-        if (error.fieldErrors) {
-          if ($A.util.isArray(error.fieldErrors)) {
-            error.fieldErrors.forEach(function (field) {
-              error.fieldErrors[field].forEach(function (errorList) {
-                errorMessages.push(errorList.message);
-              });
-            });
-
-            if (errorMessages.length > 0) {
-              h.error(errorMessages.join(', '), { title: 'Fix the error(s)' });
-              errorMessages = [];
-            }
-          } else if (Object.keys(error.fieldErrors)) {
-            Object.keys(error.fieldErrors).forEach(function (field) {
-              error.fieldErrors[field].forEach(function (errorList) {
-                errorMessages.push(errorList.message);
-              });
-            });
-
-            if (errorMessages.length > 0) {
-              h.error(errorMessages.join(', '), { title: 'Fix the error(s)' });
-              errorMessages = [];
-            }
-          }
-        }
-
-        var message = error.message || '';
-        if (message.indexOf('FIELD_CUSTOM_VALIDATION_EXCEPTION') > 0) {
-          message = message.split('FIELD_CUSTOM_VALIDATION_EXCEPTION, ')[1];
-          message = message.split(': ')[0];
-        } else if (message.indexOf('DUPLICATE_VALUE') > 0) {
-          message = message.split('DUPLICATE_VALUE, ')[1];
-          message = message.split(': ')[0];
-        }
-        errorMessages.push(message);
-      });
-
-      if (errorMessages.length > 0) {
-        h.error(errorMessages.join(', '));
-      }
-    } else {
-      h.error('Contact Administrator!', { title: 'Something went wrong!', });
-    }
 
     if (errors && Array.isArray(errors)) {
       var errorMessages = [];
