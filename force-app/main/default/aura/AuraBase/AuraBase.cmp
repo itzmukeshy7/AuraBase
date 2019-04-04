@@ -1,0 +1,20 @@
+<!--
+ - Base component with utility methods like(Server call, toasts, redirects, etc.)
+ -
+ - @author  Mukesh Yadav <tmp@itzmukeshy7.dev>
+ - @version 1.0
+ - @since   2019-04-01
+ -
+ -->
+<aura:component extensible="true" controller="AuraBase" description="Base component with utility methods like(Server call, toasts, redirects, etc.)">
+
+  <aura:attribute name="ns" type="String" default="" />
+  <aura:attribute name="processingMessage" type="String" default="Loading..." />
+  <aura:attribute name="isProcessing" type="Boolean" default="false" />
+  <aura:attribute name="fullScreenSpinner" type="Boolean" default="true" />
+
+  <div class="slds-is-relative">
+    <lightning:spinner alternativeText="{!v.processingMessage}" variant="brand" class="{!(v.isProcessing)? (v.fullScreenSpinner? 'slds-is-fixed': ''): ' slds-hide'}" />
+    {!v.body}
+  </div>
+</aura:component>
