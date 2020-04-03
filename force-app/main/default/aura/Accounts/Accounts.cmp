@@ -3,10 +3,11 @@
  -
  - @author  Mukesh Yadav <tmp@itzmukeshy7.dev>
  - @version 1.0
- - @since   2019-04-01
+ - @since   1.0
  -
  -->
-<aura:component extends="c:AuraBase" controller="AccountsCtlr" implements="flexipage:availableForRecordHome" description="Accounts component(renders accounts).">
+
+<aura:component extends="c:AuraBase" controller="AccountsCtlr" implements="flexipage:availableForAllPageTypes" description="Accounts component(renders accounts).">
 
   <aura:handler name="init" value="{!this}" action="{!c.onInit}" />
 

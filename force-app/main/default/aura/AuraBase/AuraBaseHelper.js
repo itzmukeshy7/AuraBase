@@ -1,63 +1,182 @@
 ({
   id: 0,
-  getUID: function () {
-    var h = this;
+
+  /**
+   * @description Get unique id.
+   *
+   * @author  Mukesh Yadav <tmp@itzmukeshy7.dev>
+   * @version 1.0
+   * @since   1.0
+   *
+   * @return {Number} Returns a unique number.
+   */
+  getUID: function() {
+    const h = this;
     return h.id++;
   },
-  showToast: function (toastType, message, tmpParams) {
+
+  /**
+   * @description Show toast notification as per the provided options.
+   *
+   * @author  Mukesh Yadav <tmp@itzmukeshy7.dev>
+   * @version 1.0
+   * @since   1.0
+   *
+   * @param {String} toastType Toast type(info, success, warning, error).
+   * @param {String} message Toast message.
+   * @param {Object} tmpParams More parameters.
+   */
+  _showToast: function(toastType, message, tmpParams) {
     tmpParams['type'] = toastType;
     tmpParams['message'] = message;
-    var showToast = $A.get('e.force:showToast');
+    const showToast = $A.get('e.force:showToast');
     if (showToast) {
-      showToast.setParams(Object.assign({ mode: 'dismissible' }, tmpParams)).fire();
+      showToast.setParams(Object.assign({mode: 'dismissible'}, tmpParams)).fire();
     }
   },
-  info: function (message, params) {
-    this.showToast('info', message, (params || {}));
-  },
-  success: function (message, params) {
-    this.showToast('success', message, (params || {}));
-  },
-  warning: function (message, params) {
-    this.showToast('warning', message, (params || {}));
-  },
-  error: function (message, params) {
-    this.showToast('error', message, (params || {}));
+
+  /**
+   * @description Show info toast notification.
+   *
+   * @author  Mukesh Yadav <tmp@itzmukeshy7.dev>
+   * @version 1.0
+   * @since   1.0
+   *
+   * @param {String} message Notification message.
+   * @param {Object} params Toast options.
+   */
+  info: function(message, params) {
+    this._showToast('info', message, (params || {}));
   },
 
-  tab: function (tabAPIName, isRedirect) {
-    var h = this;
+  /**
+   * @description Show success toast notification.
+   *
+   * @author  Mukesh Yadav <tmp@itzmukeshy7.dev>
+   * @version 1.0
+   * @since   1.0
+   *
+   * @param {String} message Notification message.
+   * @param {Object} params Toast options.
+   */
+  success: function(message, params) {
+    this._showToast('success', message, (params || {}));
+  },
+
+  /**
+   * @description Show warning toast notification.
+   *
+   * @author  Mukesh Yadav <tmp@itzmukeshy7.dev>
+   * @version 1.0
+   * @since   1.0
+   *
+   * @param {String} message Notification message.
+   * @param {Object} params Toast options.
+   */
+  warning: function(message, params) {
+    this._showToast('warning', message, (params || {}));
+  },
+
+  /**
+   * @description Show error toast notification.
+   *
+   * @author  Mukesh Yadav <tmp@itzmukeshy7.dev>
+   * @version 1.0
+   * @since   1.0
+   *
+   * @param {String} message Notification message.
+   * @param {Object} params Toast options.
+   */
+  error: function(message, params) {
+    this._showToast('error', message, (params || {}));
+  },
+
+  /**
+   * @description Redirect to lightning tab.
+   *
+   * @author  Mukesh Yadav <tmp@itzmukeshy7.dev>
+   * @version 1.0
+   * @since   1.0
+   *
+   * @param {String} tabAPIName Tab API name.
+   * @param {Boolean} isRedirect Whether to redirect or not.
+   *
+   * @see redirect
+   */
+  tab: function(tabAPIName, isRedirect) {
+    const h = this;
     h.redirect(('/one/one.app#/n/' + tabAPIName), isRedirect);
   },
-  redirect: function (url, isRedirect) {
-    var navigateToURL = $A.get('e.force:navigateToURL');
+
+  /**
+   * @description Redirect to specified url.
+   *
+   * @author  Mukesh Yadav <tmp@itzmukeshy7.dev>
+   * @version 1.0
+   * @since   1.0
+   *
+   * @param {String} url URL for redirection.
+   * @param {Boolean} isRedirect Whether to redirect or not.
+   */
+  redirect: function(url, isRedirect) {
+    const navigateToURL = $A.get('e.force:navigateToURL');
     if (navigateToURL) {
       navigateToURL.setParams({
         url: url,
-        isredirect: (isRedirect === true)
+        isredirect: (isRedirect === true),
       }).fire();
     }
   },
-  navigateToComponent: function (componentNameWithNamespace, componentAttributes, isRedirect) {
-    var attributes = {};
+
+  /**
+   * @description Redirect to lightning component.
+   *
+   * @author  Mukesh Yadav <tmp@itzmukeshy7.dev>
+   * @version 1.0
+   * @since   1.0
+   *
+   * @param {String} componentNameWithNamespace Component name with namespace.
+   * @param {Object} componentAttributes Attributes to pass to the new component.
+   * @param {Boolean} isRedirect Whether to redirect or not.
+   */
+  navigateToComponent: function(componentNameWithNamespace, componentAttributes, isRedirect) {
+    let attributes = {};
     if (Object.keys(componentAttributes || {}).length > 0) {
       attributes = componentAttributes;
     }
-    var navigateToComponent = $A.get('e.force:navigateToComponent');
+    const navigateToComponent = $A.get('e.force:navigateToComponent');
     if (navigateToComponent) {
       navigateToComponent.setParams({
         componentDef: componentNameWithNamespace,
         componentAttributes: attributes,
-        isredirect: (isRedirect === true)
+        isredirect: (isRedirect === true),
       }).fire();
     }
   },
 
-  isValid: function (c, id) {
-    var validateFields = c.find(id || 'validate');
-    var isValid;
-    if (validateFields) {
-      isValid = [].concat(validateFields).reduce(function (validSoFar, input) {
+  /**
+   * @description Validate lightning elements.
+   *
+   * @author  Mukesh Yadav <tmp@itzmukeshy7.dev>
+   * @version 1.0
+   * @since   1.0
+   *
+   * @param {CObject} c Component reference.
+   * @param {List} auraIds auraIds of the elements, we need to validate, if not provided then using ['validate'].
+   *
+   * @return {Boolean} Whether all the elements are valida or not.
+   */
+  isValid: function(c, auraIds) {
+    auraIds = (!auraIds ? ['validate'] : auraIds);
+
+    let validateElements = [];
+    auraIds.forEach(function(auraId) {
+      validateElements = validateElements.concat(c.find(auraId));
+    });
+
+    let isValid;
+    if (validateElements) {
+      isValid = [].concat(validateElements).reduce(function(validSoFar, input) {
         input.showHelpMessageIfInvalid();
         return validSoFar && input.get('v.validity').valid;
       }, true);
@@ -65,13 +184,26 @@
     return isValid;
   },
 
-  request: function (c, methodName, params, success, tmpOptions) {
-    var action = c.get('c.' + methodName);
-    var options = Object.assign({
+  /**
+   * @description Makes call to Apex method and handles response(Success / Error).
+   *
+   * @author  Mukesh Yadav <tmp@itzmukeshy7.dev>
+   * @version 1.0
+   * @since   1.0
+   *
+   * @param {Object} c Component reference.
+   * @param {String} methodName Apex Controller method name.
+   * @param {Object} params Any paramteres to pass to the Apex Controller method.
+   * @param {Function} success Success callback method.
+   * @param {Object} tmpOptions Configuration options.
+   */
+  request: function(c, methodName, params, success, tmpOptions) {
+    const action = c.get('c.' + methodName);
+    const options = Object.assign({
       spinnerAttr: 'isProcessing',
       showSpinner: true,
       hideSpinner: true,
-      handleErrors: true
+      handleErrors: true,
     }, tmpOptions);
 
     if (Object.keys(params)) {
@@ -90,13 +222,13 @@
       action.setAbortable();
     }
 
-    var hideSpinner = false;
+    let hideSpinner = false;
     if (options.showSpinner && options.spinnerAttr) {
       hideSpinner = true;
       c.set(('v.' + options.spinnerAttr), true);
     }
 
-    action.setCallback(this, function (response) {
+    action.setCallback(this, function(response) {
       if (options.showSpinner) {
         hideSpinner = true;
         c.set(('v.' + options.spinnerAttr), true);
@@ -108,7 +240,7 @@
           break;
 
         case 'ERROR':
-          var errors = response.getError();
+          const errors = response.getError();
           if (options.handleErrors) {
             this.handleErrors(c, errors);
           }
@@ -134,52 +266,63 @@
     });
     $A.enqueueAction(action);
   },
-  handleErrors: function (c, errors) {
-    var h = this;
+
+  /**
+   * @description Process errors returned by Apex controller call response.
+   *
+   * @author  Mukesh Yadav <tmp@itzmukeshy7.dev>
+   * @version 1.0
+   * @since   1.0
+   *
+   * @param {Object} c Component reference.
+   * @param {Any} errors Errors data returned as a result of Apex controller call.
+   */
+  handleErrors: function(c, errors) {
+    const h = this;
 
     if (errors && Array.isArray(errors)) {
-      var errorMessages = [];
-      errors.forEach(function (error) {
+      let errorMessages = [];
+      errors.forEach(function(error) {
         if (error.pageErrors && Array.isArray(error.pageErrors)) {
-          error.pageErrors.forEach(function (pageError) {
+          error.pageErrors.forEach(function(pageError) {
             errorMessages.push(pageError.message);
           });
 
           if (errorMessages.length > 0) {
-            h.warning(errorMessages.join(', '), { mode: 'sticky', title: 'Fix the errors.' });
+            h.warning(errorMessages.join(', '), {mode: 'sticky', title: 'Fix the errors.'});
             errorMessages = [];
           }
         }
 
         if (error.fieldErrors && Array.isArray(error.fieldErrors)) {
-          error.fieldErrors.forEach(function (field) {
-            error.fieldErrors[field].forEach(function (errorList) {
+          error.fieldErrors.forEach(function(field) {
+            error.fieldErrors[field].forEach(function(errorList) {
               errorMessages.push(errorList.message);
             });
           });
 
           if (errorMessages.length > 0) {
-            h.warning(errorMessages.join(', '), { mode: 'sticky', title: 'Fix the errors.' });
+            h.warning(errorMessages.join(', '), {mode: 'sticky', title: 'Fix the errors.'});
             errorMessages = [];
           }
         }
 
         if (error.fieldErrors && Object.keys(error.fieldErrors)) {
-          Object.keys(error.fieldErrors).forEach(function (field) {
-            error.fieldErrors[field].forEach(function (errorList) {
+          Object.keys(error.fieldErrors).forEach(function(field) {
+            error.fieldErrors[field].forEach(function(errorList) {
               errorMessages.push(errorList.message);
             });
           });
 
           if (errorMessages.length > 0) {
-            h.warning(errorMessages.join(', '), { mode: 'sticky', title: 'Fix the errors.' });
+            h.warning(errorMessages.join(', '), {mode: 'sticky', title: 'Fix the errors.'});
             errorMessages = [];
           }
         }
 
 
-        var message = error.message || '';
-        var statusCodes = {
+        let message = error.message || '';
+        const statusCodes = {
           'ALL_OR_NONE_OPERATION_ROLLED_BACK': 'The bulk operation was rolled back because one of the records wasn\'t processed successfully.',
           'ALREADY_IN_PROCESS': 'You can\'t submit a record that is already in an approval process.Wait for the previous approval process to complete before resubmitting a request with this record.',
           'ASSIGNEE_TYPE_REQUIRED': 'Designate an assignee for the approval request (ProcessInstanceStep or ProcessInstanceWorkitem).',
@@ -353,16 +496,16 @@
           'UNVERIFIED_SENDER_ADDRESS': 'A sendEmail() call attempted to use an unverified email address defined in the OrgWideEmailAddress object.',
           'WEBLINK_SIZE_LIMIT_EXCEEDED': 'The size of a WebLink URL or JavaScript code exceeds the limit.',
           'WEBLINK_URL_INVALID': 'The WebLink URL has failed the URL string validation check.',
-          'WRONG_CONTROLLER_TYPE': 'The controller type for your Visualforce email template does not match the object type being used.'
+          'WRONG_CONTROLLER_TYPE': 'The controller type for your Visualforce email template does not match the object type being used.',
         };
 
-        var statusKeys = Object.keys(statusCodes);
-        for (var statusCode = 0, totalCodes = statusKeys.length; statusCode < totalCodes; statusCode++) {
+        const statusKeys = Object.keys(statusCodes);
+        for (let statusCode = 0, totalCodes = statusKeys.length; statusCode < totalCodes; statusCode++) {
           try {
             if (message.indexOf(statusKeys[statusCode]) > -1) {
               if (!statusCodes[statusKeys[statusCode]]) {
                 message = message.split(statusKeys[statusCode] + ', ')[1];
-                var messageParts = message.split(': ');
+                const messageParts = message.split(': ');
                 if (messageParts.length > 1) {
                   messageParts.pop();
                 }
@@ -380,10 +523,10 @@
       });
 
       if (errorMessages.length > 0) {
-        h.warning(errorMessages.join(', '), { mode: 'sticky' });
+        h.warning(errorMessages.join(', '), {mode: 'sticky'});
       }
     } else {
-      h.warning('Something went wrong.', { mode: 'sticky', title: 'Contact System Administrator!' });
+      h.warning('Something went wrong.', {mode: 'sticky', title: 'Contact System Administrator!'});
     }
-  }
-})
+  },
+});

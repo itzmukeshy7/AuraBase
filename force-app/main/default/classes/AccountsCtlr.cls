@@ -3,7 +3,7 @@
  *
  * @author  Mukesh Yadav <tmp@itzmukeshy7.dev>
  * @version 1.0
- * @since   2019-04-01
+ * @since   1.0
  *
  * @example
  * <aura:component controller="AccountsCtlr" >
@@ -11,6 +11,15 @@
  */
 public with sharing class AccountsCtlr {
 
+  /**
+   * Get 100 accounts.
+   *
+   * @author  Mukesh Yadav <tmp@itzmukeshy7.dev>
+   * @version 1.0
+   * @since   1.0
+   *
+   * @return Returns 100 accounts.
+   */
   @AuraEnabled
   public static AuraBase getAccounts(){
     AuraBase r = new AuraBase('AccountsCtlr.getAccounts');
@@ -24,7 +33,14 @@ public with sharing class AccountsCtlr {
     return r;
   }
 
-  public class Record{
+  /**
+   * Account record wrapper.
+   *
+   * @author  Mukesh Yadav <tmp@itzmukeshy7.dev>
+   * @version 1.0
+   * @since   1.0
+   */
+  public with sharing class Record{
     @AuraEnabled
     public Id id{get;set;}
     @AuraEnabled

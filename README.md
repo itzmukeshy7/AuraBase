@@ -1,2 +1,2 @@
 # AuraBase
-AuraBase a lightning component and an Apex class to bundle the utility methods in helper and Apex class and have all the requests response in same format(Object always). 
+A bunch of utility methods to reduce the repetative lightning JS code and helps you to focus on the main business logic implementation and abstracting all the repetation inside itself.
